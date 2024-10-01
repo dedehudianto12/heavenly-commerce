@@ -1,7 +1,8 @@
 "use strict";
 
 const User = require("../domain/User");
-const { hashPassword } = require("../helper/hashPassword");
+const { hashPassword, checkPassword } = require("../helper/hashPassword");
+const { generateAccessToken } = require("../helper/jsonWebToken");
 
 module.exports = function RegisterUser({ userRepository }) {
   return {
@@ -33,6 +34,29 @@ module.exports = function RegisterUser({ userRepository }) {
         role: user.role,
         createdAt: user.createdAt,
       });
+    },
+    async loginUser({ email, password }) {
+      const user = await userRepository.findByEmail(email);
+      if (!user) {
+        throw new Error("email/password is wrong");
+      }
+
+      const passwordIsTrue = await checkPassword(password, user.password);
+      if (!passwordIsTrue) {
+        throw new Error("email/password is wrong");
+      }
+
+      const token = generateAccessToken(user);
+
+      return {
+        message: "Login Successfull",
+        accessToken: token,
+        user: {
+          username: user.username,
+          id: user.id,
+          role: user.role,
+        },
+      };
     },
   };
 };

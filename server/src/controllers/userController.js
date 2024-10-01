@@ -14,5 +14,13 @@ module.exports = function UserController({ userRepository }) {
         res.status(400).json({ error: error.message });
       }
     },
+    async login(req, res) {
+      try {
+        const loginUser = await userUseCase.loginUser(req.body);
+        res.status(201).json(loginUser);
+      } catch (error) {
+        res.status(400).json({ error: error.message });
+      }
+    },
   };
 };
