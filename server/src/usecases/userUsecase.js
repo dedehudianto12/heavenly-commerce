@@ -4,7 +4,7 @@ const User = require("../domain/User");
 const { hashPassword, checkPassword } = require("../helper/hashPassword");
 const { generateAccessToken } = require("../helper/jsonWebToken");
 
-module.exports = function RegisterUser({ userRepository }) {
+module.exports = function UserUsecase({ userRepository }) {
   return {
     async registerUser(userData) {
       const existingEmail = await userRepository.findByEmail(userData.email);
