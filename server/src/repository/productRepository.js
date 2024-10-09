@@ -3,6 +3,7 @@
 module.exports = function productRepository({ db }) {
   return {
     async create(productData) {
+      console.log(productData);
       return db.product.create({ data: productData });
     },
     async update(id, productData) {

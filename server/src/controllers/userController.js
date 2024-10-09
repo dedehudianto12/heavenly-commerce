@@ -16,6 +16,7 @@ module.exports = function UserController({ userRepository }) {
     },
     async login(req, res) {
       try {
+        console.log(userRepository);
         const loginUser = await userUseCase.loginUser(req.body);
         res.status(201).json(loginUser);
       } catch (error) {
